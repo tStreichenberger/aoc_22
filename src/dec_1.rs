@@ -5,12 +5,9 @@ use std::{
         Reverse
     },
     error::Error,
-    fs
 };
 
-pub fn solution_1() -> Result<u64, Box<dyn Error>> {
-    let input = fs::read_to_string("IO/dec_1/in.txt")?;
-
+pub fn solution_1(input: String) -> Result<u64, Box<dyn Error>> {
     let elves = input.split("\n\n");
 
     let mut max_calories = 0;
@@ -28,8 +25,7 @@ pub fn solution_1() -> Result<u64, Box<dyn Error>> {
 }
 
 
-pub fn solution_2() -> Result<u64, Box<dyn Error>> {
-    let input = fs::read_to_string("IO/dec_1/in.txt")?;
+pub fn solution_2(input: String) -> Result<u64, Box<dyn Error>> {
 
     let elves = input.split("\n\n");
 
