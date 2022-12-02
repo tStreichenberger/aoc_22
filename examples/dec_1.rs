@@ -1,15 +1,16 @@
 use aoc_22::dec_1::*;
+use aoc_22::IO;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let input = std::fs::read_to_string("IO/dec_1/in.txt")?;
+    let input = IO::read_in(1)?;
 
 
     let max_calories = solution_1(input.clone())?;
-    std::fs::write("IO/dec_1/out_1.txt", max_calories.to_string())?;
+    IO::write_out(1, 1, max_calories)?;
 
 
     let top_3_calories = solution_2(input)?;
-    std::fs::write("IO/dec_1/out_2.txt", top_3_calories.to_string())?;
+    IO::write_out(1, 2, top_3_calories)?;
 
     Ok(())
 }
