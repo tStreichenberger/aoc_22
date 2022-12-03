@@ -1,6 +1,4 @@
-use std::collections::HashMap;
-
-use crate::{AOCResult,CustomError};
+use crate::{AOCResult, CustomError};
 
 pub fn solution_1(tournament: String) -> AOCResult<u32> {
     let mut total_points = 0;
@@ -18,8 +16,6 @@ fn calc_points_1(game: &str) -> AOCResult<u32> {
     Ok(outcome.points() + my_move.points())
 }
 
-
-
 pub fn solution_2(tournament: String) -> AOCResult<u32> {
     let mut total_points = 0;
     for game in tournament.split("\n") {
@@ -36,13 +32,12 @@ fn calc_points_2(game: &str) -> AOCResult<u32> {
     Ok(outcome.points() + my_move.points())
 }
 
-
 // Three choices to play in Rock Paper Scissors
 #[derive(Copy, Clone, PartialEq)]
 enum RPS {
     Rock,
     Paper,
-    Scissors
+    Scissors,
 }
 
 impl RPS {
@@ -50,24 +45,26 @@ impl RPS {
         match self {
             RPS::Rock => 1,
             RPS::Paper => 2,
-            RPS::Scissors => 3
+            RPS::Scissors => 3,
         }
     }
 
     fn beats(self) -> Self {
         match self {
             RPS::Rock => RPS::Scissors,
-            RPS::Paper => RPS:: Rock,
+            RPS::Paper => RPS::Rock,
             RPS::Scissors => RPS::Paper,
         }
     }
 
-    fn draws(self) -> Self {self}
+    fn draws(self) -> Self {
+        self
+    }
 
     fn loses_to(self) -> Self {
         match self {
             RPS::Rock => RPS::Paper,
-            RPS::Paper => RPS:: Scissors,
+            RPS::Paper => RPS::Scissors,
             RPS::Scissors => RPS::Rock,
         }
     }
@@ -78,7 +75,10 @@ impl RPS {
             "A" | "X" => Ok(RPS::Rock),
             "B" | "Y" => Ok(RPS::Paper),
             "C" | "Z" => Ok(RPS::Scissors),
-            _ => Err(CustomError(format!("Tried to parse {letter}, something other than A|B|C|X|Y|Z")).into())
+            _ => Err(CustomError(format!(
+                "Tried to parse {letter}, something other than A|B|C|X|Y|Z"
+            ))
+            .into()),
         }
     }
 
@@ -86,7 +86,7 @@ impl RPS {
         match outcome {
             Outcome::Win => lhs.loses_to(),
             Outcome::Draw => lhs.draws(),
-            Outcome::Lose => lhs.beats()
+            Outcome::Lose => lhs.beats(),
         }
     }
 }
@@ -96,7 +96,7 @@ impl RPS {
 enum Outcome {
     Win,
     Draw,
-    Lose
+    Lose,
 }
 
 impl Outcome {
@@ -104,7 +104,7 @@ impl Outcome {
         match self {
             Outcome::Win => 6,
             Outcome::Draw => 3,
-            Outcome::Lose => 0
+            Outcome::Lose => 0,
         }
     }
 
@@ -114,13 +114,20 @@ impl Outcome {
             "X" => Ok(Outcome::Lose),
             "Y" => Ok(Outcome::Draw),
             "Z" => Ok(Outcome::Win),
-            _ => Err(CustomError(format!("Tried to parse {letter}, something other than X|Y|Z")).into())
+            _ => Err(CustomError(format!(
+                "Tried to parse {letter}, something other than X|Y|Z"
+            ))
+            .into()),
         }
     }
 
     fn from_match(lhs: RPS, rhs: RPS) -> Self {
-        if rhs.beats() == lhs {Outcome::Win}
-        else if rhs.draws() == lhs {Outcome::Draw}
-        else {Outcome::Lose}
+        if rhs.beats() == lhs {
+            Outcome::Win
+        } else if rhs.draws() == lhs {
+            Outcome::Draw
+        } else {
+            Outcome::Lose
+        }
     }
 }

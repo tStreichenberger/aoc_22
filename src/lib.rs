@@ -1,5 +1,6 @@
 pub mod dec_1;
 pub mod dec_2;
+pub mod dec_3;
 
 pub type AOCResult<T> = Result<T, Box<dyn std::error::Error>>;
 
@@ -14,17 +15,19 @@ impl std::fmt::Display for CustomError {
     }
 }
 
-
-pub mod IO {
-    use std::fs;
+pub mod io {
     use crate::AOCResult;
+    use std::fs;
     pub fn read_in(day: u8) -> AOCResult<String> {
         let input = fs::read_to_string(format!("IO/dec_{day}/in.txt"))?;
         Ok(input)
     }
 
     pub fn write_out<C: ToString>(day: u8, sol_num: u8, content: C) -> AOCResult<()> {
-        fs::write(format!("IO/dec_{day}/out_{sol_num}.txt"), content.to_string())?;
+        fs::write(
+            format!("IO/dec_{day}/out_{sol_num}.txt"),
+            content.to_string(),
+        )?;
         Ok(())
     }
 }

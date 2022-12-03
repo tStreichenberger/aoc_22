@@ -1,9 +1,6 @@
 use std::{
+    cmp::{max, Reverse},
     collections::BinaryHeap,
-    cmp::{
-        max,
-        Reverse
-    },
     error::Error,
 };
 
@@ -24,13 +21,13 @@ pub fn solution_1(input: String) -> Result<u64, Box<dyn Error>> {
     Ok(max_calories)
 }
 
-
 pub fn solution_2(input: String) -> Result<u64, Box<dyn Error>> {
-
     let elves = input.split("\n\n");
 
-    let mut top_3  = Top3::new();
-    for _ in 0..3 {top_3.push(Reverse(0))}
+    let mut top_3 = Top3::new();
+    for _ in 0..3 {
+        top_3.push(Reverse(0))
+    }
 
     for elf in elves {
         let rations = elf.split("\n");
@@ -44,7 +41,7 @@ pub fn solution_2(input: String) -> Result<u64, Box<dyn Error>> {
     Ok(top_3.sum())
 }
 
-type Top3 = BinaryHeap::<Reverse<u64>>;
+type Top3 = BinaryHeap<Reverse<u64>>;
 
 trait Top3Ext {
     fn replace_smallest(&mut self, calories: u64);
