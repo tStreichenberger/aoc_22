@@ -12,8 +12,7 @@ fn main() -> AOCResult<()> {
     io::write_out($1, 2, ans_2)?;
 
     Ok(())
-}
-"
+}"
 echo "$example" > examples/dec_$1.rs
 
 mkdir -p IO/dec_$1
@@ -28,7 +27,10 @@ pub fn solution_1(input: String) -> AOCResult<u32> {
 
 pub fn solution_2(input: String) -> AOCResult<u32> {
     Ok(42)
-}
-"
+}"
 
-echo "$script" > src/dec_$1.rs
+path=src/dec_$1.rs
+
+if ! test -e $path; then
+    echo "$script" > src/dec_$1.rs
+fi
