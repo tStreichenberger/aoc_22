@@ -1,5 +1,5 @@
 use crate::AOCResult;
-use itertools::{self, Itertools};
+use itertools::Itertools;
 
 pub fn solution_1(input: String) -> AOCResult<u32> {
     let mut total = 0;
