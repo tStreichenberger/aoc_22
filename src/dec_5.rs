@@ -68,8 +68,8 @@ trait CrateMover9000 {
 impl CrateMover9000 for Vec<Stack> {
     fn execute_command_9000(&mut self, command: Command) {
         for _ in 0..command.0 {
-            let crt: Crate = self.get_mut(command.1 - 1).unwrap().pop().unwrap();
-            self.get_mut(command.2 - 1).unwrap().push(crt);
+            let crt: Crate = self[command.1 - 1].pop().unwrap();
+            self[command.2 - 1].push(crt);
         }
     }
 }
@@ -82,11 +82,11 @@ impl CrateMover9001 for Vec<Stack> {
     fn execute_command_9001(&mut self, command: Command) {
         let mut picked_up = Stack::new();
         for _ in 0..command.0 {
-            let crt: Crate = self.get_mut(command.1 - 1).unwrap().pop().unwrap();
+            let crt: Crate = self[command.1 - 1].pop().unwrap();
             picked_up.push(crt);
         }
         for crt in picked_up.into_iter().rev() {
-            self.get_mut(command.2 - 1).unwrap().push(crt);
+            self[command.2 - 1].push(crt);
         }
     }
 }
