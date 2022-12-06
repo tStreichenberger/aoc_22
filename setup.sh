@@ -3,7 +3,7 @@ echo "Setting Up Environment For December $1th"
 example=$"use aoc_22::{dec_$1::*, AOCResult, io};
 
 fn main() -> AOCResult<()> {
-    let input = io::read_in($5)?;
+    let input = io::read_in($1)?;
 
     let ans_1 = solution_1(input.clone())?;
     io::write_out($1, 1, ans_1)?;

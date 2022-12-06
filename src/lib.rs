@@ -3,6 +3,7 @@ pub mod dec_2;
 pub mod dec_3;
 pub mod dec_4;
 pub mod dec_5;
+pub mod dec_6;
 
 pub type AOCResult<T> = Result<T, Box<dyn std::error::Error>>;
 
