@@ -1,89 +1,31 @@
 use crate::AOCResult;
-use std::collections::HashSet;
 
 pub fn solution_1(input: String) -> AOCResult<usize> {
     let forest = parse_forest(input);
-    let mut hidden_from_left = HashSet::new();
-    let mut hidden_from_right = HashSet::new();
-
-    let num_rows = forest.len();
-    let num_cols = forest[0].len();
-
-    // go down every row
-    for row_i in 0..num_rows {
-        let mut largest = forest[row_i][0];
-        // if row_i == 1 {println!("{largest}")}
-        // go to the right on each row
-        for col_i in 1..num_cols {
-            let tree = forest[row_i][col_i];
-            if tree > largest {
-                largest = tree;
-            } else {
-                hidden_from_left.insert((row_i,col_i));
-            }
-        }
-        let mut largest = forest[row_i][num_cols - 1];
-        // go to the left on each row
-        for col_i in (0..num_cols-1).rev() {
-            let tree = forest[row_i][col_i];
-            if tree > largest {
-                largest = tree;
-            } else {
-                hidden_from_right.insert((row_i,col_i));
-            }
+    let mut total_hidden = 0;
+    for row in 0..forest.len() {
+        for col in 0..forest[0].len() {
+            if forest.tree_visible(row, col) {total_hidden += 1}
         }
     }
-
-    let mut hidden_from_top = HashSet::new();
-    let mut hidden_from_bottom = HashSet::new();
-    // iterate over each column
-    for col_i in 0..num_cols {
-        let mut largest = forest[0][col_i];
-        if col_i == 4 {println!("{largest}")}
-        // iterate down each column
-        for row_i in 1..num_rows {
-            let tree = forest[row_i][col_i];
-            if tree > largest {
-                largest = tree;
-            } else {
-                hidden_from_top.insert((row_i,col_i));
-            }
-        }
-        let mut largest = forest[num_rows - 1][col_i];
-        // iterator up each column
-        for row_i in (0..num_rows-1).rev() {
-            let tree = forest[row_i][col_i];
-            if tree > largest {
-                largest = tree;
-            } else {
-                hidden_from_bottom.insert((row_i,col_i));
-            }
-        }
-    }
-    let visible = (1,2);
-    println!("Hidden From Top?: {}", hidden_from_top.contains(&visible));
-
-    // find trees that are hidden in all directions
-    let hidden_vert: HashSet<&(usize,usize)> = hidden_from_top.intersection(&hidden_from_bottom).collect();
-    let hidden_horiz: HashSet<&(usize,usize)> = hidden_from_left.intersection(&hidden_from_right).collect();
-
-    let all_hidden = hidden_vert.intersection(&hidden_horiz);
-    // println!("{:?}", all_hidden);
-    let border = 5;
-    for coord in all_hidden.clone() {
-        if coord.0 < border && coord.1 < border {println!("{coord:?}")}
-    }
-    let total_hidden = all_hidden.count();
     Ok(total_hidden)
 }
 
 pub fn solution_2(input: String) -> AOCResult<u32> {
-    Ok(42)
+    let forest = parse_forest(input);
+    let mut best = 0;
+    for row in 0..forest.len() {
+        for col in 0..forest[0].len() {
+            let score = forest.tree_score(row, col);
+            best = std::cmp::max(score,best);
+        }
+    }
+    Ok(best)
 }
 
 
 
-fn parse_forest(input: String) -> Vec<Vec<u32>> {
+fn parse_forest(input: String) -> Forest {
     let mut forest = Vec::new();
     for line in input.split("\n") {
         let mut row = Vec::new();
@@ -96,9 +38,106 @@ fn parse_forest(input: String) -> Vec<Vec<u32>> {
     forest
 }
 
-#[test]
-fn test() {
-    for i in (0..10-1).rev() {
-        println!("{i}");
+type Forest = Vec<Vec<u32>>;
+
+trait ForestExt {
+    fn tree_visible(&self, row: usize, col: usize) -> bool;
+    fn tree_score(&self, row: usize, col: usize) -> u32;
+}
+
+impl ForestExt for Forest {
+    fn tree_visible(&self, row: usize, col: usize) -> bool {
+        let tree = self[row][col];
+        let mut hiddenUp = false;
+        if row > 0 {
+            let mut up = row - 1;
+            while up >= 0 {
+                if self[up][col] >= tree {
+                    hiddenUp = true;
+                    break;
+                }
+                if up == 0 {break};
+                up -= 1;
+            }
+        }
+        let mut down = row + 1;
+        let mut hiddenDown = false;
+        while down < self.len() {
+            if self[down][col] >= tree {
+                hiddenDown = true;
+                break;
+            }
+            down += 1;
+        }
+
+        let mut hiddenLeft = false;
+        if col > 0 {
+            let mut left = col - 1;
+            while left >= 0 {
+                if self[row][left] >= tree {
+                    hiddenLeft = true;
+                    break;
+                }
+                if left == 0 {break};
+                left -= 1;
+            }
+        }
+        let mut right = col + 1;
+        let mut hiddenRight = false;
+        while right < self[0].len() {
+            if self[row][right] >= tree {
+                hiddenRight = true;
+                break;
+            }
+        right += 1;
+        }
+        ! (hiddenRight && hiddenLeft && hiddenDown && hiddenUp)
+    }
+
+
+
+    fn tree_score(&self, row: usize, col: usize) -> u32 {
+        let tree = self[row][col];
+        let mut score = (0,0,0,0);
+        if row > 0 {
+            let mut up = row - 1;
+            while up >= 0 {
+                score.0 += 1;
+                if self[up][col] >= tree {
+                    break;
+                }
+                if up == 0 {break};
+                up -= 1;
+            }
+        }
+        let mut down = row + 1;
+        while down < self.len() {
+            score.1 += 1;
+            if self[down][col] >= tree {
+                break;
+            }
+            down += 1;
+        }
+
+        if col > 0 {
+            let mut left = col - 1;
+            while left >= 0 {
+                score.2 +=1;
+                if self[row][left] >= tree {
+                    break;
+                }
+                if left == 0 {break};
+                left -= 1;
+            }
+        }
+        let mut right = col + 1;
+        while right < self[0].len() {
+            score.3 +=1;
+            if self[row][right] >= tree {
+                break;
+            }
+        right += 1;
+        }
+        score.0 * score.1 * score.2 * score.3
     }
 }
