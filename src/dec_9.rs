@@ -57,11 +57,8 @@ impl PosExt for Pos {
     fn get_pulled_to(&mut self, head: Pos) {
         let x_diff = head.0 - self.0;
         let y_diff = head.1 - self.1;
-        if x_diff.abs() > 1 {
+        if x_diff.abs() > 1 || y_diff.abs() > 1 {
             self.0 += x_diff.signum(); 
-            self.1 += y_diff.signum();
-        } else if y_diff.abs() > 1 {
-            self.0 += x_diff.signum();
             self.1 += y_diff.signum();
         }
     }
