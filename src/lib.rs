@@ -9,7 +9,8 @@ pub mod dec_8;
 pub mod dec_9;
 pub mod dec_10;
 
-pub type AOCResult<T> = Result<T, Box<dyn std::error::Error>>;
+pub type AOCError = Box<dyn std::error::Error>;
+pub type AOCResult<T> = Result<T, AOCError>;
 
 #[derive(Debug)]
 pub struct CustomError(pub String);
