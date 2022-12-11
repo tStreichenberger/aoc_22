@@ -48,12 +48,12 @@ trait ForestExt {
 impl ForestExt for Forest {
     fn tree_visible(&self, row: usize, col: usize) -> bool {
         let tree = self[row][col];
-        let mut hiddenUp = false;
+        let mut hidden_up = false;
         if row > 0 {
             let mut up = row - 1;
-            while up >= 0 {
+            loop {
                 if self[up][col] >= tree {
-                    hiddenUp = true;
+                    hidden_up = true;
                     break;
                 }
                 if up == 0 {break};
@@ -61,21 +61,21 @@ impl ForestExt for Forest {
             }
         }
         let mut down = row + 1;
-        let mut hiddenDown = false;
+        let mut hidden_down = false;
         while down < self.len() {
             if self[down][col] >= tree {
-                hiddenDown = true;
+                hidden_down = true;
                 break;
             }
             down += 1;
         }
 
-        let mut hiddenLeft = false;
+        let mut hidden_left = false;
         if col > 0 {
             let mut left = col - 1;
-            while left >= 0 {
+            loop {
                 if self[row][left] >= tree {
-                    hiddenLeft = true;
+                    hidden_left = true;
                     break;
                 }
                 if left == 0 {break};
@@ -83,15 +83,15 @@ impl ForestExt for Forest {
             }
         }
         let mut right = col + 1;
-        let mut hiddenRight = false;
+        let mut hidden_right = false;
         while right < self[0].len() {
             if self[row][right] >= tree {
-                hiddenRight = true;
+                hidden_right = true;
                 break;
             }
         right += 1;
         }
-        ! (hiddenRight && hiddenLeft && hiddenDown && hiddenUp)
+        ! (hidden_right && hidden_left && hidden_down && hidden_up)
     }
 
 
@@ -101,7 +101,7 @@ impl ForestExt for Forest {
         let mut score = (0,0,0,0);
         if row > 0 {
             let mut up = row - 1;
-            while up >= 0 {
+            loop {
                 score.0 += 1;
                 if self[up][col] >= tree {
                     break;
@@ -121,7 +121,7 @@ impl ForestExt for Forest {
 
         if col > 0 {
             let mut left = col - 1;
-            while left >= 0 {
+            loop {
                 score.2 +=1;
                 if self[row][left] >= tree {
                     break;

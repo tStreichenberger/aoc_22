@@ -16,3 +16,4 @@ To run the solution for day `X` just put the input in `IO/dec_X/in.txt` and then
 |December 8th|[Question](https://adventofcode.com/2022/day/8) |[Solution](https://github.com/tStreichenberger/aoc_22/blob/main/src/dec_8.rs)|
 |December 9th|[Question](https://adventofcode.com/2022/day/9) |[Solution](https://github.com/tStreichenberger/aoc_22/blob/main/src/dec_9.rs)|
 |December 10th|[Question](https://adventofcode.com/2022/day/10) |[Solution](https://github.com/tStreichenberger/aoc_22/blob/main/src/dec_10.rs)|
+|December 11th|[Question](https://adventofcode.com/2022/day/11) |[Solution](https://github.com/tStreichenberger/aoc_22/blob/main/src/dec_11.rs)|
